@@ -17,7 +17,7 @@ public class Sentence {
      n - номер слова, после которого он стоит
      symbol - сам символ
      */
-    private List<Symbol> nonletters;
+    private List<Symbol> nonletters = new ArrayList<Symbol>();
 
     /*public Sentence(Word[] value) {
         for (Word word: value) {
@@ -36,7 +36,8 @@ public class Sentence {
         for (String reg:regexp) {
             Matcher p = Pattern.compile("([\\w]+)([ ,:;.]{0,1})|([ ,:;.]{1})").matcher(reg);
             p.find();
-            if (p.group(3) == null) {
+            //if ((p.group(3) != null) && (p.group(1) == null)) countWords++;
+            if ((p.group(3) == null)) {
                 this.value.add(new Word(p.group(1)));
                 this.nonletters.add(new Symbol(countWords, p.group(2).charAt(0)));
                 countWords++;
@@ -46,7 +47,6 @@ public class Sentence {
 
     public String getSentence(){
         StringBuilder sentence = new StringBuilder();
-        int row = 0;
         int count = 0;
         for (Word word: this.value) {
             sentence.append(word.getValue());
@@ -55,26 +55,36 @@ public class Sentence {
                     sentence.append(symbol.getValue());
                 }
             }
+            count++;
+        }
+        return sentence.toString();
+    }
+
+    public String getNoneLetters(){
+        StringBuilder sentence = new StringBuilder();
+        for (Symbol symbol:nonletters) {
+                sentence.append(symbol.getWordNumber());
         }
         return sentence.toString();
     }
 
     public static void main(String[] args) {
-        //Sentence a = new Sentence("Fsdafasdf asddfas f asdfasdf, : ghjk hjk.");
+        Sentence a = new Sentence("Fsdafasdf asddfas, f asdfasdf, : ghjk hjk.");
 
-        //System.out.println(a.getSentence());
+        System.out.println(a.getSentence());
+        System.out.println(a.getNoneLetters());
 
-
-        String[] regexp= "Fsdafasdf asddfas f asdfasdf, : ghjk hjk.".split("(?<=([ ,:;.]{1}))");
+        String[] regexp= "Fsdafasdf asddfas, f asdfasdf, : ghjk hjk.".split("(?<=([ ,:;.]{1}))");
+        int i=6;
         for (String reg:regexp) {
             System.out.print("|"+reg+"|");
         }
-        System.out.println("\n"+regexp.length);
-        System.out.println(regexp[5]);
-        Matcher p = Pattern.compile("([\\w]+)([ ,:;.]{0,1})|([ ,:;.]{1})").matcher(regexp[0]);
+        Matcher p = Pattern.compile("([\\w]+)([ ,:;.]{0,1})|([ ,:;.]{1})").matcher(regexp[i]);
         p.find();
-        System.out.println(p.group(1).toCharArray());
-        System.out.print(new Word(p.group(1)));
+        System.out.println("\n"+regexp[i]);
+        System.out.println(p.group(3));
+
+
 
     }
 
