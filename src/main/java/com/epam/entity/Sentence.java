@@ -31,10 +31,10 @@ public class Sentence {
     }
 
     public void sentenceParser(String value){
-        String[] regexp= value.split("(?<=([ ,:;]{1}))");
+        String[] regexp= value.split("(?<=([ ,:;\\n]{1}))");
         int countWords = 0; // Номер слова
         for (String reg:regexp) {
-            Matcher p = Pattern.compile("([[\\w]а-яА-Я]+)([[^\\w] \n]{0,1})|([[^\\w] \n]{1})").matcher(reg);
+            Matcher p = Pattern.compile("([[\\w]а-яА-Я]+)([[^\\w]]{0,1})|([[^\\w]]{1})").matcher(reg);
             p.find();
             if ((p.group(3) == null)) {
                 this.value.add(new Word(p.group(1)));

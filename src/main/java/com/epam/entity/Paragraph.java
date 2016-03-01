@@ -16,7 +16,7 @@ public class Paragraph {
     }
 
     public void paragraphParser(String value){
-        String[] sentences = value.split("(?<=([ ….!?]{1,3}))");
+        String[] sentences = value.split("(?<=([….!?]{1,3}))");
         for (String sentence:sentences) {
             this.value.add(new Sentence(sentence));
         }
@@ -25,7 +25,7 @@ public class Paragraph {
     public String getParagraph(){
         StringBuilder paragraph = new StringBuilder();
         for (Sentence sentence: this.value) {
-            paragraph.append(sentence.getSentence());
+            paragraph.append(sentence.getSentence()+"\n");
         }
         return paragraph.toString();
     }
