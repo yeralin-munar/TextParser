@@ -31,17 +31,18 @@ public class Sentence {
     }
 
     public void sentenceParser(String value){
-        String[] regexp= value.split("(?<=([ ,:;.]{1}))");
-        int countWords = 0;
+        String[] regexp= value.split("(?<=([ ,:;]{1}))");
+        int countWords = 0; // Номер слова
         for (String reg:regexp) {
-            Matcher p = Pattern.compile("([\\w]+)([ ,:;.]{0,1})|([ ,:;.]{1})").matcher(reg);
+            Matcher p = Pattern.compile("([[\\w]а-яА-Я]+)([[^\\w] \n]{0,1})|([[^\\w] \n]{1})").matcher(reg);
             p.find();
-            //if ((p.group(3) != null) && (p.group(1) == null)) countWords++;
             if ((p.group(3) == null)) {
                 this.value.add(new Word(p.group(1)));
                 this.nonletters.add(new Symbol(countWords, p.group(2).charAt(0)));
                 countWords++;
-            } else {this.nonletters.add(new Symbol(countWords, p.group(3).charAt(0)));}
+            } else {
+                this.nonletters.add(new Symbol(countWords-1, p.group(3).charAt(0)));
+            }
         }
     }
 
@@ -68,24 +69,5 @@ public class Sentence {
         return sentence.toString();
     }
 
-    public static void main(String[] args) {
-        Sentence a = new Sentence("Fsdafasdf asddfas, f asdfasdf, : ghjk hjk.");
-
-        System.out.println(a.getSentence());
-        System.out.println(a.getNoneLetters());
-
-        String[] regexp= "Fsdafasdf asddfas, f asdfasdf, : ghjk hjk.".split("(?<=([ ,:;.]{1}))");
-        int i=6;
-        for (String reg:regexp) {
-            System.out.print("|"+reg+"|");
-        }
-        Matcher p = Pattern.compile("([\\w]+)([ ,:;.]{0,1})|([ ,:;.]{1})").matcher(regexp[i]);
-        p.find();
-        System.out.println("\n"+regexp[i]);
-        System.out.println(p.group(3));
-
-
-
-    }
 
 }
